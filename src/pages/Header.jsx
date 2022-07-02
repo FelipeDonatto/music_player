@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { getUser } from '../services/userAPI';
 import Loading from './Loading';
 
@@ -31,11 +32,16 @@ render() {
   const { loading, userData } = this.state;
   if (loading) return <Loading />;
   return (
-    <header data-testid="header-component">
+    <header className="header" data-testid="header-component">
       <span data-testid="header-user-name">
         Olá,
-        { ` ${userData.name}` }
+        { ` ${userData.name}.` }
       </span>
+      <nav>
+        <Link data-testid="link-to-search" exact to="/search">Procurar</Link>
+        <Link data-testid="link-to-favorites" to="/favorites">Favoritos</Link>
+        <Link data-testid="link-to-profile" to="/profile">Perfil</Link>
+      </nav>
     </header>
   );
 }
