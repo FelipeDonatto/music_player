@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { createUser } from '../services/userAPI';
 import Loading from './Loading';
+import './LoginCSS.css';
 
 class Login extends React.Component {
   constructor() {
@@ -36,26 +37,37 @@ class Login extends React.Component {
     const btnCondition = 3;
     if (loading) return <Loading />;
     return (
-      <div data-testid="page-login">
-        <input
-          onChange={ ({ target }) => this.setState({
-            inputValue: target.value,
-            disableBtn: target.value.length < btnCondition,
-          }) }
-          data-testid="login-name-input"
-          type="text"
-          name=""
-          id=""
+      <div className="login-body">
+        <img
+          className="login-logo"
+          src="https://www.onlygfx.com/wp-content/uploads/2022/03/colorful-sound-wave-equalizer-2.png"
+          alt=""
+          srcSet=""
         />
-        <button
-          disabled={ disableBtn }
-          data-testid="login-submit-button"
-          type="button"
-          onClick={ () => this.loadingFunc() }
-        >
-          Entrar
+        <h1 style={ { textAlign: 'center' } }> Digite seu nome de usuário</h1>
+        <div className="login" data-testid="page-login">
 
-        </button>
+          <input
+            onChange={ ({ target }) => this.setState({
+              inputValue: target.value,
+              disableBtn: target.value.length < btnCondition,
+            }) }
+            data-testid="login-name-input"
+            type="text"
+            name=""
+            id=""
+          />
+          <button
+            disabled={ disableBtn }
+            data-testid="login-submit-button"
+            type="button"
+            onClick={ () => this.loadingFunc() }
+          >
+            Entrar
+
+          </button>
+        </div>
+
       </div>);
   }
 }
