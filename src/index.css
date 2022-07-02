@@ -12,10 +12,6 @@ code {
     monospace;
 }
 
-body {
-  background: #000;
-}
-
 .loading {
   align-items: center;
   display: flex;
