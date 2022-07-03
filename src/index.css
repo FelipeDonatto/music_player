@@ -50,3 +50,21 @@ nav *:hover {
   color: white;
   border: 1px solid black
 }
+
+.card {
+  background-color: rgb(188, 166, 188);
+  display: inline-flex;
+  flex-direction: column;
+  height: fit-content;
+  margin: 5px;
+  width: fit-content;
+}
+
+.card img {
+  height: 180px;
+  width: 290px;
+  left: 0px;
+  top: 0px;
+  border-radius: [object Object]px;
+  
+}
