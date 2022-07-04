@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Header from './Header';
 import getMusics from '../services/musicsAPI';
 import MusicCard from './MusicCard';
+import { getFavoriteSongs } from '../services/favoriteSongsAPI';
 
 class Album extends React.Component {
   constructor() {
@@ -10,6 +11,7 @@ class Album extends React.Component {
     this.state = {
       album: '',
       loadSinger: false,
+      favSongs: '',
     };
   }
 
@@ -17,6 +19,11 @@ class Album extends React.Component {
     const { match } = this.props;
     const { id } = match.params;
     this.fetchMusics(id);
+    getFavoriteSongs();
+
+    this.setState({
+      favSongs: localStorage.getItem('favorite_songs'),
+    });
   }
 
   fetchMusics = async (id) => {
@@ -26,7 +33,7 @@ class Album extends React.Component {
 
   render() {
     console.log();
-    const { album, loadSinger } = this.state;
+    const { album, loadSinger, favSongs } = this.state;
     const [albumCover, ...tracks] = album;
     return (
       <div data-testid="page-album">
@@ -74,7 +81,11 @@ class Album extends React.Component {
           >
             {
               loadSinger && (tracks.map(
-                (music) => <MusicCard { ...music } key={ music.trackId } />,
+                (music) => (<MusicCard
+                  { ...music }
+                  key={ music.trackId }
+                  favSongs={ favSongs }
+                />),
               ))
             }
           </div>

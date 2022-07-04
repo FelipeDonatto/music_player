@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { addSong } from '../services/favoriteSongsAPI';
+import { addSong, removeSong } from '../services/favoriteSongsAPI';
 import getMusics from '../services/musicsAPI';
 import Loading from './Loading';
 
@@ -13,14 +13,6 @@ class MusicCard extends React.Component {
     };
   }
 
-  // componentDidUpdate() {
-  //   const { favSong } = this.state;
-  //   const { trackId } = this.props;
-  //   if (favSong) {
-  //     this.saveSong(trackId);
-  //   }
-  // }
-
   loadingSwitch = () => {
     this.setState((prevState) => ({
       loading: !prevState.loading,
@@ -32,20 +24,34 @@ class MusicCard extends React.Component {
       previewUrl,
       trackName,
       trackId,
+      favSongs,
     } = this.props;
     const { loading, favSong } = this.state;
-
+    const favSongUpdater = favSongs;
     const saveSong = async (id) => {
-      this.loadingSwitch();
-      let music = '';
-      await getMusics(id)
-        .then(async (result) => { music = result[0].trackId; });
-      await addSong(music);
-      this.loadingSwitch();
-
-      this.setState((prevState) => ({
-        favSong: !prevState.favSong,
-      }));
+      if (localStorage.getItem('favorite_songs').includes(id)) {
+        this.loadingSwitch();
+        let music = '';
+        const firstInAr = [0];
+        await getMusics(id)
+          .then(async (result) => { music = result[firstInAr]; });
+        await removeSong(music);
+        this.setState((prevState) => ({
+          favSong: !prevState.favSong,
+        }));
+        this.loadingSwitch();
+      } else {
+        this.loadingSwitch();
+        let music = '';
+        const firstInAr = [0];
+        await getMusics(id)
+          .then(async (result) => { music = result[firstInAr]; });
+        this.setState((prevState) => ({
+          favSong: !prevState.favSong,
+        }));
+        await addSong(music);
+        this.loadingSwitch();
+      }
     };
 
     if (loading) return <Loading />;
@@ -70,7 +76,7 @@ class MusicCard extends React.Component {
               data-testid={ `checkbox-music-${trackId}` }
               type="checkbox"
               id={ trackId }
-              checked={ favSong }
+              checked={ favSong || favSongUpdater.includes(trackId) }
               onClick={ async () => saveSong(trackId) }
             />
             Favorita
@@ -86,5 +92,6 @@ MusicCard.propTypes = {
   previewUrl: PropTypes.string.isRequired,
   trackName: PropTypes.string.isRequired,
   trackId: PropTypes.string.isRequired,
+  favSongs: PropTypes.string.isRequired,
 };
 export default MusicCard;
