@@ -68,3 +68,13 @@ nav *:hover {
   border-radius: [object Object]px;
   
 }
+
+.music {
+  display: flex;
+  align-items: center;
+}
+
+.musicName {
+  display: flex;
+  width: 100%;
+}
